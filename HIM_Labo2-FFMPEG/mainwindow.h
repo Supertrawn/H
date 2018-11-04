@@ -24,27 +24,36 @@ private:
     QWindow *propertiesWindow;
     DetailWindow* detailsWindow;
 
-    QString* inputFile;
-    QString* outputDir;
-    QString* outputFilename;
+    QString inputFile;
+    QString outputDir;
+    QString outputFilename;
 
     int beginHour = 0;
     int beginMin = 0;
     int beginSec = 0;
     int beginMilli = 0;
+    int beginTime = 0;
 
     int endHour = 0;
     int endMin = 0;
     int endSec = 0;
     int endMilli = 0;
+    int endTime = 0;
 
     void updateBeginFromSelect();
     void updateEndFromSelect();
+    void updateOutput();
+    void updateFFMPEG();
+
+    void enableOutput(bool s);
+    void enableTime(bool s);
+    void enableFFMPEG(bool s);
 
 private slots:
 
     void chooseInputFile();
     void chooseOutputDirectory();
+    void updateOutputFilename();
 
     void updateBeginHour(int time);
     void updateBeginMin(int time);

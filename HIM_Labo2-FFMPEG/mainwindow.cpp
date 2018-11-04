@@ -10,6 +10,7 @@
 #include "QProcess"
 #include "QDebug"
 #include "QStringList"
+#include "QFileInfo"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -29,10 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->setFixedSize(600,700);
 
-    //pour appeler les bouton dans mainwindow.ui
-    //ui.posebt->
-
-
     ui->setupUi(this);
     this->setWindowTitle(titleStr);
 
@@ -40,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->chooseBt, SIGNAL(clicked()), SLOT(chooseInputFile()));
     connect(ui->selectDirBt, SIGNAL(clicked()), SLOT(chooseOutputDirectory()));
+    connect(ui->outputEdit, SIGNAL(textChanged(QString)), SLOT(updateOutputFilename()));
 
     connect(ui->hourBeginSelect, SIGNAL(valueChanged(int)), SLOT(updateBeginHour(int)));
     connect(ui->minBeginSelect, SIGNAL(valueChanged(int)), SLOT(updateBeginMin(int)));
@@ -67,17 +65,121 @@ void MainWindow::chooseInputFile() {
 
     if (!selected.isEmpty()) {
         ui->inputFileEdit->setText(selected);
-        inputFile = &selected;
+        inputFile = selected;
 
         QProcess probe;
 
-        QString ffmpeg = "ffmpeg -i " + *inputFile + " 2>&1 | grep Duration";
-        qDebug() << ffmpeg;
+        QString ffmpeg = "ffmpeg -i " + inputFile;
 
         probe.start(ffmpeg);
-        probe.waitForFinished();
+        probe.waitForFinished(-1);
 
-        QString output(probe.readAllStandardOutput());
+        QString error(probe.readAllStandardError());
+        int durationPosition = error.indexOf("Duration", Qt::CaseInsensitive);
+        QString duration = error.mid(durationPosition + 10, 11);
+
+        int hour = duration.mid(0, 2).toInt();
+        int min = duration.mid(3, 2).toInt();
+        int sec = duration.mid(6, 2).toInt();
+        int milli = duration.mid(9, 2).toInt();
+
+        this->ui->hourBeginSelect->setMaximum(hour);
+        this->ui->minBeginSelect->setMaximum(min);
+        this->ui->secBeginSelect->setMaximum(sec);
+        this->ui->milliBeginSelect->setMaximum(milli);
+
+        this->ui->hourEndSelect->setMaximum(hour);
+        this->ui->minEndSelect->setMaximum(min);
+        this->ui->secEndSelect->setMaximum(sec);
+        this->ui->milliEndSelect->setMaximum(milli);
+
+        this->endHour = hour;
+        this->endMin = min;
+        this->endSec = sec;
+        this->endMilli = milli;
+
+        int newval = this->endHour*(60*60*100) + this->endMin*(60*100) + this->endSec*100 + this->endMilli;
+        this->ui->endSlider->setMaximum(newval);
+        this->ui->beginSlider->setMaximum(newval);
+
+        this->updateEndFromSelect();
+        this->enableOutput(true);
+    }
+}
+
+void MainWindow::enableOutput(bool s) {
+
+    if(s) {
+        this->ui->outputEdit->setEnabled(s);
+        this->ui->selectDirBt->setEnabled(s);
+        this->ui->propertiesBt->setEnabled(s);
+    }
+
+    else {
+        this->ui->outputEdit->setDisabled(!s);
+        this->ui->selectDirBt->setDisabled(!s);
+        this->ui->propertiesBt->setDisabled(!s);
+    }
+
+    if(!s) {
+        this->enableTime(false);
+    }
+}
+
+void MainWindow::enableTime(bool s) {
+
+    if(!s) {
+        this->ui->hourBeginSelect->setDisabled(!s);
+        this->ui->minBeginSelect->setDisabled(!s);
+        this->ui->secBeginSelect->setDisabled(!s);
+        this->ui->milliBeginSelect->setDisabled(!s);
+        this->ui->beginSlider->setDisabled(!s);
+
+        this->ui->hourEndSelect->setDisabled(!s);
+        this->ui->minEndSelect->setDisabled(!s);
+        this->ui->secEndSelect->setDisabled(!s);
+        this->ui->milliEndSelect->setDisabled(!s);
+        this->ui->endSlider->setDisabled(!s);
+        this->enableFFMPEG(!s);
+    }
+
+    else {
+        this->ui->hourBeginSelect->setEnabled(s);
+        this->ui->minBeginSelect->setEnabled(s);
+        this->ui->secBeginSelect->setEnabled(s);
+        this->ui->milliBeginSelect->setEnabled(s);
+        this->ui->beginSlider->setEnabled(s);
+
+        this->ui->hourEndSelect->setEnabled(s);
+        this->ui->minEndSelect->setEnabled(s);
+        this->ui->secEndSelect->setEnabled(s);
+        this->ui->milliEndSelect->setEnabled(s);
+        this->ui->endSlider->setEnabled(s);
+
+        this->updateBeginFromSelect();
+        this->updateEndFromSelect();
+        this->enableFFMPEG(s);
+    }
+}
+
+void MainWindow::updateFFMPEG() {
+
+    this->ui->cmdResultEdit->setText("ffmpeg -i " + this->inputFile +
+            " -ss " + QString::number(this->beginHour) + ":" + QString::number(this->beginMin) +
+            ":" + QString::number(this->beginSec) + "." + QString::number(this->beginMilli) +
+            " -t " + QString::number(this->endHour) + ":" + QString::number(this->endMin) +
+            ":" + QString::number(this->endSec) + "." + QString::number(this->endMilli) +
+            " -async 1 " + this->outputFilename);
+}
+
+void MainWindow::enableFFMPEG(bool s) {
+    if(!s) {
+        this->ui->cmdResultEdit->setDisabled(!s);
+        this->ui->cmdResultEdit->setText("");
+    }
+    else {
+        this->ui->cmdResultEdit->setEnabled(s);
+        this->updateFFMPEG();
     }
 }
 
@@ -86,8 +188,14 @@ void MainWindow::chooseOutputDirectory() {
     QString selected = QFileDialog::getExistingDirectory(this, tr("Choose output directory"), QDir::homePath());
 
     if (!selected.isEmpty()) {
-        ui->outputEdit->setText(selected);
+        this->outputDir = selected;
+        this->updateOutput();
     }
+}
+
+void MainWindow::updateOutputFilename() {
+    this->outputFilename = this->ui->outputEdit->text();
+    this->updateOutput();
 }
 
 void MainWindow::updateBeginHour(int time) {
@@ -130,13 +238,60 @@ void MainWindow::updateEndMilli(int time) {
     this->updateEndFromSelect();
 }
 
+void MainWindow::updateOutput() {
+
+    if(this->outputFilename.length() > 0 && this->outputDir.length() > 0) {
+
+        QString extension = this->inputFile.split(".").last();
+        this->outputFilename = this->outputDir + "/" + this->outputFilename + "." + extension;
+        this->ui->outputFullName->setText("Full name: " + this->outputFilename);
+
+        bool fileExists = QFileInfo::exists(this->outputFilename) && QFileInfo(this->outputFilename).isFile();
+        this->enableTime(!fileExists);
+
+        if(fileExists) {
+            this->ui->errorLabel->setText("A file with this name already exist!");
+        }
+        else {
+            this->ui->errorLabel->setText("");
+            this->updateFFMPEG();
+        }
+    }
+}
+
 void MainWindow::updateBeginFromSelect() {
-    int newval = this->beginHour*(60*60*100) + this->beginMin*(60*100) + this->beginSec*100 + this->beginMilli;
-    this->ui->beginSlider->setValue(newval);
+    this->beginTime = this->beginHour*(60*60*100) + this->beginMin*(60*100) + this->beginSec*100 + this->beginMilli;
+    this->ui->beginSlider->setValue(this->beginTime);
+
+    if(this->endTime < this->beginTime) {
+
+        this->endTime = this->beginTime;
+        this->endHour = this->beginHour;
+        this->endMin = this->beginMin;
+        this->endSec = this->beginSec;
+        this->endMilli = this->beginMilli;
+
+        this->updateEndFromSelect();
+        this->updateEndFromSlider(this->beginTime);
+        this->updateFFMPEG();
+    }
 }
 void MainWindow::updateEndFromSelect() {
-    int newval = this->endHour*(60*60*100) + this->endMin*(60*100) + this->endSec*100 + this->endMilli;
-    this->ui->endSlider->setValue(newval);
+    this->endTime = this->endHour*(60*60*100) + this->endMin*(60*100) + this->endSec*100 + this->endMilli;
+    this->ui->endSlider->setValue(this->endTime);
+
+    if(this->beginTime > this->endTime) {
+
+        this->beginTime = this->endTime;
+        this->beginHour = this->endHour;
+        this->beginMin = this->endMin;
+        this->beginSec = this->endSec;
+        this->beginMilli = this->endMilli;
+
+        this->updateBeginFromSelect();
+        this->updateBeginFromSlider(this->endTime);
+        this->updateFFMPEG();
+    }
 }
 
 void MainWindow::updateBeginFromSlider(int value) {
@@ -155,6 +310,8 @@ void MainWindow::updateBeginFromSlider(int value) {
     this->ui->minBeginSelect->setValue(min);
     this->ui->secBeginSelect->setValue(secs);
     this->ui->milliBeginSelect->setValue(milli);
+
+    this->updateFFMPEG();
 }
 
 void MainWindow::updateEndFromSlider(int value) {
@@ -173,6 +330,8 @@ void MainWindow::updateEndFromSlider(int value) {
     this->ui->minEndSelect->setValue(min);
     this->ui->secEndSelect->setValue(secs);
     this->ui->milliEndSelect->setValue(milli);
+
+    this->updateFFMPEG();
 }
 
 MainWindow::~MainWindow()

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[17];
-    char stringdata0[236];
+    QByteArrayData data[18];
+    char stringdata0[257];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -35,28 +35,29 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 15), // "chooseInputFile"
 QT_MOC_LITERAL(2, 27, 0), // ""
 QT_MOC_LITERAL(3, 28, 21), // "chooseOutputDirectory"
-QT_MOC_LITERAL(4, 50, 15), // "updateBeginHour"
-QT_MOC_LITERAL(5, 66, 4), // "time"
-QT_MOC_LITERAL(6, 71, 14), // "updateBeginMin"
-QT_MOC_LITERAL(7, 86, 14), // "updateBeginSec"
-QT_MOC_LITERAL(8, 101, 16), // "updateBeginMilli"
-QT_MOC_LITERAL(9, 118, 13), // "updateEndHour"
-QT_MOC_LITERAL(10, 132, 12), // "updateEndMin"
-QT_MOC_LITERAL(11, 145, 12), // "updateEndSec"
-QT_MOC_LITERAL(12, 158, 14), // "updateEndMilli"
-QT_MOC_LITERAL(13, 173, 21), // "updateBeginFromSlider"
-QT_MOC_LITERAL(14, 195, 5), // "value"
-QT_MOC_LITERAL(15, 201, 19), // "updateEndFromSlider"
-QT_MOC_LITERAL(16, 221, 14) // "showProperties"
+QT_MOC_LITERAL(4, 50, 20), // "updateOutputFilename"
+QT_MOC_LITERAL(5, 71, 15), // "updateBeginHour"
+QT_MOC_LITERAL(6, 87, 4), // "time"
+QT_MOC_LITERAL(7, 92, 14), // "updateBeginMin"
+QT_MOC_LITERAL(8, 107, 14), // "updateBeginSec"
+QT_MOC_LITERAL(9, 122, 16), // "updateBeginMilli"
+QT_MOC_LITERAL(10, 139, 13), // "updateEndHour"
+QT_MOC_LITERAL(11, 153, 12), // "updateEndMin"
+QT_MOC_LITERAL(12, 166, 12), // "updateEndSec"
+QT_MOC_LITERAL(13, 179, 14), // "updateEndMilli"
+QT_MOC_LITERAL(14, 194, 21), // "updateBeginFromSlider"
+QT_MOC_LITERAL(15, 216, 5), // "value"
+QT_MOC_LITERAL(16, 222, 19), // "updateEndFromSlider"
+QT_MOC_LITERAL(17, 242, 14) // "showProperties"
 
     },
     "MainWindow\0chooseInputFile\0\0"
-    "chooseOutputDirectory\0updateBeginHour\0"
-    "time\0updateBeginMin\0updateBeginSec\0"
-    "updateBeginMilli\0updateEndHour\0"
-    "updateEndMin\0updateEndSec\0updateEndMilli\0"
-    "updateBeginFromSlider\0value\0"
-    "updateEndFromSlider\0showProperties"
+    "chooseOutputDirectory\0updateOutputFilename\0"
+    "updateBeginHour\0time\0updateBeginMin\0"
+    "updateBeginSec\0updateBeginMilli\0"
+    "updateEndHour\0updateEndMin\0updateEndSec\0"
+    "updateEndMilli\0updateBeginFromSlider\0"
+    "value\0updateEndFromSlider\0showProperties"
 };
 #undef QT_MOC_LITERAL
 
@@ -66,7 +67,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,33 +75,35 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   79,    2, 0x08 /* Private */,
-       3,    0,   80,    2, 0x08 /* Private */,
-       4,    1,   81,    2, 0x08 /* Private */,
-       6,    1,   84,    2, 0x08 /* Private */,
-       7,    1,   87,    2, 0x08 /* Private */,
-       8,    1,   90,    2, 0x08 /* Private */,
-       9,    1,   93,    2, 0x08 /* Private */,
-      10,    1,   96,    2, 0x08 /* Private */,
-      11,    1,   99,    2, 0x08 /* Private */,
-      12,    1,  102,    2, 0x08 /* Private */,
-      13,    1,  105,    2, 0x08 /* Private */,
-      15,    1,  108,    2, 0x08 /* Private */,
-      16,    0,  111,    2, 0x08 /* Private */,
+       1,    0,   84,    2, 0x08 /* Private */,
+       3,    0,   85,    2, 0x08 /* Private */,
+       4,    0,   86,    2, 0x08 /* Private */,
+       5,    1,   87,    2, 0x08 /* Private */,
+       7,    1,   90,    2, 0x08 /* Private */,
+       8,    1,   93,    2, 0x08 /* Private */,
+       9,    1,   96,    2, 0x08 /* Private */,
+      10,    1,   99,    2, 0x08 /* Private */,
+      11,    1,  102,    2, 0x08 /* Private */,
+      12,    1,  105,    2, 0x08 /* Private */,
+      13,    1,  108,    2, 0x08 /* Private */,
+      14,    1,  111,    2, 0x08 /* Private */,
+      16,    1,  114,    2, 0x08 /* Private */,
+      17,    0,  117,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,    5,
-    QMetaType::Void, QMetaType::Int,   14,
-    QMetaType::Void, QMetaType::Int,   14,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,    6,
+    QMetaType::Void, QMetaType::Int,   15,
+    QMetaType::Void, QMetaType::Int,   15,
     QMetaType::Void,
 
        0        // eod
@@ -114,17 +117,18 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->chooseInputFile(); break;
         case 1: _t->chooseOutputDirectory(); break;
-        case 2: _t->updateBeginHour((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->updateBeginMin((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 4: _t->updateBeginSec((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: _t->updateBeginMilli((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 6: _t->updateEndHour((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: _t->updateEndMin((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 8: _t->updateEndSec((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->updateEndMilli((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 10: _t->updateBeginFromSlider((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 11: _t->updateEndFromSlider((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 12: _t->showProperties(); break;
+        case 2: _t->updateOutputFilename(); break;
+        case 3: _t->updateBeginHour((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: _t->updateBeginMin((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->updateBeginSec((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->updateBeginMilli((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->updateEndHour((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->updateEndMin((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 9: _t->updateEndSec((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: _t->updateEndMilli((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 11: _t->updateBeginFromSlider((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 12: _t->updateEndFromSlider((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 13: _t->showProperties(); break;
         default: ;
         }
     }
@@ -155,13 +159,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 14)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }

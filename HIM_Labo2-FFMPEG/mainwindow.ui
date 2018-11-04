@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>536</width>
-    <height>457</height>
+    <height>561</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -41,6 +41,9 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="inputFileEdit">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -50,10 +53,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>File</string>
+     <string>Input filename</string>
     </property>
    </widget>
    <widget class="QPushButton" name="propertiesBt">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -79,25 +85,15 @@
      <string>Output</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="outputEdit">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>130</y>
-      <width>321</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>output file</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="selectDirBt">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>130</y>
-      <width>171</width>
+      <width>151</width>
       <height>31</height>
      </rect>
     </property>
@@ -109,20 +105,23 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>190</y>
-      <width>81</width>
+      <y>220</y>
+      <width>121</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Select Time</string>
+     <string>Select begin time</string>
     </property>
    </widget>
    <widget class="QSlider" name="beginSlider">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
+      <y>320</y>
       <width>241</width>
       <height>20</height>
      </rect>
@@ -148,7 +147,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>170</y>
+      <y>200</y>
       <width>511</width>
       <height>16</height>
      </rect>
@@ -158,60 +157,78 @@
     </property>
    </widget>
    <widget class="QSpinBox" name="hourBeginSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
    <widget class="QSpinBox" name="minBeginSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
    <widget class="QSpinBox" name="secBeginSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>110</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
    <widget class="QSpinBox" name="hourEndSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>330</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
    <widget class="QSpinBox" name="minEndSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>380</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
    <widget class="QSpinBox" name="secEndSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>430</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
@@ -221,7 +238,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>290</y>
+      <y>350</y>
       <width>511</width>
       <height>16</height>
      </rect>
@@ -234,7 +251,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>320</y>
+      <y>380</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -244,10 +261,13 @@
     </property>
    </widget>
    <widget class="QLineEdit" name="cmdResultEdit">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
+      <y>410</y>
       <width>511</width>
       <height>31</height>
      </rect>
@@ -255,12 +275,18 @@
     <property name="text">
      <string>Result commande line</string>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QSlider" name="endSlider">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>270</x>
-      <y>260</y>
+      <y>320</y>
       <width>251</width>
       <height>20</height>
      </rect>
@@ -273,7 +299,7 @@
     <property name="geometry">
      <rect>
       <x>250</x>
-      <y>250</y>
+      <y>310</y>
       <width>20</width>
       <height>41</height>
      </rect>
@@ -283,23 +309,204 @@
     </property>
    </widget>
    <widget class="QSpinBox" name="milliBeginSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
    <widget class="QSpinBox" name="milliEndSelect">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>480</x>
-      <y>220</y>
+      <y>280</y>
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="outputEdit">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>130</y>
+      <width>351</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="placeholderText">
+     <string>Enter output filename without extension</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_2">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>220</y>
+      <width>111</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select end time</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="outputFullName">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>180</y>
+      <width>511</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Full name: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="errorLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>470</y>
+      <width>511</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="Line" name="line_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>450</y>
+      <width>511</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hour</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_4">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Min</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_5">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sec</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_6">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Milli</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_7">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Min</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_8">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hour</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_9">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sec</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="selectTimeLabel_10">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>250</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Milli</string>
     </property>
    </widget>
   </widget>
@@ -312,14 +519,6 @@
      <height>22</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
