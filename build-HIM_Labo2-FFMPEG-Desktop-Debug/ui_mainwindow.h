@@ -85,8 +85,9 @@ public:
         chooseBt->setGeometry(QRect(310, 40, 91, 31));
         inputFileEdit = new QLineEdit(centralWidget);
         inputFileEdit->setObjectName(QStringLiteral("inputFileEdit"));
-        inputFileEdit->setEnabled(false);
+        inputFileEdit->setEnabled(true);
         inputFileEdit->setGeometry(QRect(10, 40, 291, 31));
+        inputFileEdit->setReadOnly(true);
         propertiesBt = new QPushButton(centralWidget);
         propertiesBt->setObjectName(QStringLiteral("propertiesBt"));
         propertiesBt->setEnabled(false);
@@ -106,6 +107,8 @@ public:
         beginSlider->setEnabled(false);
         beginSlider->setGeometry(QRect(10, 320, 241, 20));
         beginSlider->setOrientation(Qt::Horizontal);
+        beginSlider->setInvertedAppearance(false);
+        beginSlider->setInvertedControls(false);
         line = new QFrame(centralWidget);
         line->setObjectName(QStringLiteral("line"));
         line->setGeometry(QRect(10, 80, 511, 16));
@@ -184,6 +187,7 @@ public:
         errorLabel = new QLabel(centralWidget);
         errorLabel->setObjectName(QStringLiteral("errorLabel"));
         errorLabel->setGeometry(QRect(10, 470, 511, 17));
+        errorLabel->setTextFormat(Qt::AutoText);
         line_5 = new QFrame(centralWidget);
         line_5->setObjectName(QStringLiteral("line_5"));
         line_5->setGeometry(QRect(10, 450, 511, 16));

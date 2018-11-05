@@ -14,25 +14,15 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow), detailsWindow(new DetailWindow)
 {
-    QString titleStr = "IHM_Labo2-FFMPEG";
-    QString inputStr = "Input";
-    QString outputStr = "Output";
-    QString selectTimeStr = "Select time";
-    QString endStr = "End";
-    QString beginStr = "Begin";
-    QString ResultStr = "Result command Line";
-    QString inputBtStr = "Select File";
-    QString propertiesBtStr = "Properties";
-    QString outputDirBtStr = "Choose output directory";
-    QString closeBtStr = "Close";
-
-    this->setFixedSize(600,700);
+    this->setFixedSize(530,510);
 
     ui->setupUi(this);
-    this->setWindowTitle(titleStr);
+    this->setWindowTitle("IHM - FFMPEG cut video");
+    this->ui->errorLabel->setStyleSheet("QLabel { color: red; }");
 
+    // Connections des éléments d'interface
     connect(ui->propertiesBt, SIGNAL(clicked(bool)), SLOT(showProperties()));
 
     connect(ui->chooseBt, SIGNAL(clicked()), SLOT(chooseInputFile()));
@@ -54,8 +44,6 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::showProperties() {
-
-    detailsWindow = new DetailWindow;
     detailsWindow->show();
 }
 
@@ -63,25 +51,39 @@ void MainWindow::chooseInputFile() {
 
     QString selected = QFileDialog::getOpenFileName(this, tr("Choose a file"), QDir::homePath());
 
+    // Si un fichier a été choisi
     if (!selected.isEmpty()) {
         ui->inputFileEdit->setText(selected);
         inputFile = selected;
 
+        // Lecture de ffprobe
         QProcess probe;
-
-        QString ffmpeg = "ffmpeg -i " + inputFile;
-
-        probe.start(ffmpeg);
+        probe.start("ffprobe -i " + inputFile);
         probe.waitForFinished(-1);
 
+        // On n'arrive qu'à lire le flux d'erreur, on fait donc un parsing maison
         QString error(probe.readAllStandardError());
         int durationPosition = error.indexOf("Duration", Qt::CaseInsensitive);
         QString duration = error.mid(durationPosition + 10, 11);
 
+        // Mise à jour de la durée
         int hour = duration.mid(0, 2).toInt();
         int min = duration.mid(3, 2).toInt();
         int sec = duration.mid(6, 2).toInt();
         int milli = duration.mid(9, 2).toInt();
+
+        this->endHour = hour;
+        this->endMin = min;
+        this->endSec = sec;
+        this->endMilli = milli;
+
+        // Détermination de l'extension
+        this->extension = this->inputFile.split(".").last();
+
+        // Mise à jour des maxima des sliders et selects
+        int newval = this->endHour*(60*60*100) + this->endMin*(60*100) + this->endSec*100 + this->endMilli;
+        this->ui->endSlider->setMaximum(newval);
+        this->ui->beginSlider->setMaximum(newval);
 
         this->ui->hourBeginSelect->setMaximum(hour);
         this->ui->minBeginSelect->setMaximum(min);
@@ -93,14 +95,17 @@ void MainWindow::chooseInputFile() {
         this->ui->secEndSelect->setMaximum(sec);
         this->ui->milliEndSelect->setMaximum(milli);
 
-        this->endHour = hour;
-        this->endMin = min;
-        this->endSec = sec;
-        this->endMilli = milli;
 
-        int newval = this->endHour*(60*60*100) + this->endMin*(60*100) + this->endSec*100 + this->endMilli;
-        this->ui->endSlider->setMaximum(newval);
-        this->ui->beginSlider->setMaximum(newval);
+        // Mise à jour des propriétés
+        this->detailsWindow->ui->hours->setText(QString::number(hour));
+        this->detailsWindow->ui->minutes->setText(QString::number(min));
+        this->detailsWindow->ui->seconds->setText(QString::number(sec));
+        this->detailsWindow->ui->milliseconds->setText(QString::number(milli));
+        this->detailsWindow->ui->format->setText(this->extension);
+
+        // On fournit un nom de fichier de sortie simple
+        this->outputFilename = this->inputFile.split("/").last().split(".").first() + " - copie." + this->extension;
+        this->ui->outputEdit->setText(this->outputFilename);
 
         this->updateEndFromSelect();
         this->enableOutput(true);
@@ -140,7 +145,7 @@ void MainWindow::enableTime(bool s) {
         this->ui->secEndSelect->setDisabled(!s);
         this->ui->milliEndSelect->setDisabled(!s);
         this->ui->endSlider->setDisabled(!s);
-        this->enableFFMPEG(!s);
+        this->enableFFMPEG(false);
     }
 
     else {
@@ -158,27 +163,29 @@ void MainWindow::enableTime(bool s) {
 
         this->updateBeginFromSelect();
         this->updateEndFromSelect();
-        this->enableFFMPEG(s);
+        this->enableFFMPEG(true);
     }
 }
 
 void MainWindow::updateFFMPEG() {
 
-    this->ui->cmdResultEdit->setText("ffmpeg -i " + this->inputFile +
+    this->ui->cmdResultEdit->setText("ffmpeg -i \"" + this->inputFile + "\"" +
             " -ss " + QString::number(this->beginHour) + ":" + QString::number(this->beginMin) +
             ":" + QString::number(this->beginSec) + "." + QString::number(this->beginMilli) +
             " -t " + QString::number(this->endHour) + ":" + QString::number(this->endMin) +
             ":" + QString::number(this->endSec) + "." + QString::number(this->endMilli) +
-            " -async 1 " + this->outputFilename);
+            " -async 1 " + "\"" + this->outputFullPath + "\"");
 }
 
 void MainWindow::enableFFMPEG(bool s) {
     if(!s) {
-        this->ui->cmdResultEdit->setDisabled(!s);
         this->ui->cmdResultEdit->setText("");
+        this->ui->cmdResultEdit->setEnabled(false);
+        this->ui->cmdResultEdit->setDisabled(true);
     }
     else {
-        this->ui->cmdResultEdit->setEnabled(s);
+        this->ui->cmdResultEdit->setDisabled(false);
+        this->ui->cmdResultEdit->setEnabled(true);
         this->updateFFMPEG();
     }
 }
@@ -187,6 +194,7 @@ void MainWindow::chooseOutputDirectory() {
 
     QString selected = QFileDialog::getExistingDirectory(this, tr("Choose output directory"), QDir::homePath());
 
+    // Si un dossier de sortie a été choisi
     if (!selected.isEmpty()) {
         this->outputDir = selected;
         this->updateOutput();
@@ -240,18 +248,27 @@ void MainWindow::updateEndMilli(int time) {
 
 void MainWindow::updateOutput() {
 
+    // Un dossier de sortie et un nom de fichier de sortie sont définis
     if(this->outputFilename.length() > 0 && this->outputDir.length() > 0) {
 
-        QString extension = this->inputFile.split(".").last();
-        this->outputFilename = this->outputDir + "/" + this->outputFilename + "." + extension;
-        this->ui->outputFullName->setText("Full name: " + this->outputFilename);
+        // Ajout de l'extension si non présente
+        if(this->outputFilename.split(".").last() != this->extension)
+            this->outputFilename += "." + this->extension;
 
-        bool fileExists = QFileInfo::exists(this->outputFilename) && QFileInfo(this->outputFilename).isFile();
-        this->enableTime(!fileExists);
+        this->outputFullPath = this->outputDir + "/" + this->outputFilename;
+        this->ui->outputFullName->setText("Full name: " + this->outputFullPath);
+
+        // Check des erreurs
+        bool fileExists = QFileInfo::exists(this->outputFullPath) && QFileInfo(this->outputFullPath).isFile();
+        bool slash = this->outputFilename.contains("/");
+
+        this->enableTime(!fileExists && !slash);
 
         if(fileExists) {
             this->ui->errorLabel->setText("A file with this name already exist!");
         }
+        else if(slash)
+            this->ui->errorLabel->setText("Dont enter a path as output file name!");
         else {
             this->ui->errorLabel->setText("");
             this->updateFFMPEG();
@@ -337,4 +354,6 @@ void MainWindow::updateEndFromSlider(int value) {
 MainWindow::~MainWindow()
 {
     delete ui;
+    detailsWindow->close();
+    delete detailsWindow;
 }

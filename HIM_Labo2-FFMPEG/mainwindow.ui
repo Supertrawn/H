@@ -42,7 +42,7 @@
    </widget>
    <widget class="QLineEdit" name="inputFileEdit">
     <property name="enabled">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
     <property name="geometry">
      <rect>
@@ -54,6 +54,9 @@
     </property>
     <property name="text">
      <string>Input filename</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="propertiesBt">
@@ -128,6 +131,12 @@
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+    <property name="invertedControls">
+     <bool>false</bool>
     </property>
    </widget>
    <widget class="Line" name="line">
@@ -390,6 +399,9 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::AutoText</enum>
     </property>
    </widget>
    <widget class="Line" name="line_5">

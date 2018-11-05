@@ -10,9 +10,9 @@ class DetailWindow : public QDialog
     Q_OBJECT
 public:
     explicit DetailWindow(QWidget *parent = nullptr);
+    Ui::DetailsWindow *ui;
 
 private:
-    Ui::DetailsWindow *ui;
 
 signals:
 
