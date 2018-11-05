@@ -49,7 +49,7 @@ void MainWindow::showProperties() {
 
 void MainWindow::chooseInputFile() {
 
-    QString selected = QFileDialog::getOpenFileName(this, tr("Choose a file"), QDir::homePath());
+    QString selected = QFileDialog::getOpenFileName(this, tr("Choose a file"), QDir::homePath(), tr("mp4 (*.mp4);; MKV (*.mkv);; MOV (*.mov)"));
 
     // Si un fichier a été choisi
     if (!selected.isEmpty()) {
